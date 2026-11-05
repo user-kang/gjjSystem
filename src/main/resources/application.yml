@@ -1,0 +1,44 @@
+# =====================================================
+# 公共配置（所有环境共用）
+# 环境切换：spring.profiles.active = dev / test / prod
+# =====================================================
+spring:
+  application:
+    name: gjj-system      # 应用名称（注册中心/日志/监控中标识本服务）
+  profiles:
+    active: dev           # 当前激活的环境：dev 开发 / test 测试 / prod 生产
+
+# =====================================================
+# Web 服务配置
+# =====================================================
+server:
+  port: 8090               # Tomcat 监听端口
+  servlet:
+    context-path: /gjj     # 所有接口的统一前缀，访问变成 /gjj/xxx
+
+# =====================================================
+# MyBatis 配置
+# =====================================================
+mybatis:
+  # Mapper XML 文件位置：resources/mapper/ 目录下所有 .xml 文件
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类包路径：配置后 XML 里 resultType 可直接写类名
+  type-aliases-package: com.yibin.gjjsystem.entity
+  configuration:
+    map-underscore-to-camel-case: true   # 下划线转驼峰：数据库 user_name → Java userName
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印SQL，开发调试用
+
+# =====================================================
+# 日志配置
+# =====================================================
+logging:
+  level:
+    # 自己的业务包打 debug 级，方便排查问题
+    com.yibin.gjjsystem: debug
+    # Spring Web 打 info 级（太多了没必要 debug）
+    org.springframework.web: info
+    # MyBatis SQL 日志（配合上面的 StdOutImpl 一起用）
+    com.yibin.gjjsystem.mapper: debug
+  pattern:
+    # 控制台日志格式：时间 级别 线程 类名 - 消息
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"

@@ -1,0 +1,24 @@
+# =====================================================
+# 测试环境配置（测试服务器用）
+# =====================================================
+server:
+  port: 8091                # 测试环境端口和开发区分开
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 测试数据库地址（示例，改成你实际的测试库IP）
+    url: "jdbc:mysql://127.0.0.1:3306/gjjSystem_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+    # 用户名密码从环境变量读取，避免写死在代码里
+    # 启动命令：java -jar app.jar --spring.profiles.active=test --DB_USERNAME=xxx --DB_PASSWORD=xxx
+    username: ${DB_USERNAME:gjjSystem}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      connection-timeout: 30000
+
+# 测试环境日志级别调低一点
+logging:
+  level:
+    com.yibin.gjjsystem: info
